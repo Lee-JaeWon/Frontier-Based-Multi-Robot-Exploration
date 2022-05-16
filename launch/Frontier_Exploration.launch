@@ -1,0 +1,20 @@
+<launch>
+    <arg name="first_tb3"  default="robot_1"/>
+    <arg name="second_tb3" default="robot_2"/>
+    <arg name="third_tb3"  default="robot_3"/>
+
+    <node name="$(arg first_tb3)_detector" pkg="Frontier-Based-Exploration" type="detector.py" output="screen">
+        <param name="map_topic" value="/robot_1/map"/>
+    </node>
+
+    <node name="$(arg second_tb3)_detector" pkg="Frontier-Based-Exploration" type="detector.py" output="screen">
+        <param name="map_topic" value="/robot_2/map"/>
+    </node>
+
+    <node name="$(arg third_tb3)_detector" pkg="Frontier-Based-Exploration" type="detector.py" output="screen">
+        <param name="map_topic" value="/robot_3/map"/>
+    </node>
+
+
+<!-- http://wiki.ros.org/rospy_tutorials/Tutorials/Makefile -->
+</launch>
