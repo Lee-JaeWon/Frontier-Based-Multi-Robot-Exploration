@@ -5,6 +5,7 @@ import rospy
 import numpy as np
 import cv2
 from copy import copy
+from matplotlib import pyplot as plt
 
 def getfrontier(mapData):
     rospy.loginfo_once("---- 'getfrontier' node is loaded ----")
@@ -26,12 +27,16 @@ def getfrontier(mapData):
             if data[i * width + j] == 100:
                 img[i, j] = 0
             elif data[i * width + j] == 0:
-                img[i, j] = 255
+                img[i, j] = 100
             elif data[i * width + j] == -1:
-                img[i, j] = 205
+                img[i, j] = 50
 
     map_bin = cv2.inRange(img, 0, 1)
-    edges = cv2.Canny(img, 0, 255)
+    edges = cv2.Canny(img, 100, 200)
+
+    # plt.imshow(edges, cmap='gray', origin='lower')
+    # plt.draw()
+    # plt.pause(0.001)
 
     _, contours, _ = cv2.findContours(map_bin, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     cv2.drawContours(map_bin, contours, -1, (255,255,255), 5)
@@ -40,23 +45,36 @@ def getfrontier(mapData):
     res = cv2.bitwise_and(map_bin, edges)
 
     frontier = copy(res) # Shallow Copy : new id
+
     _, contours, _ = cv2.findContours(frontier,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
     cv2.drawContours(frontier, contours, -1, (255,255,255), 2)
 
     _, contours, _ = cv2.findContours(frontier,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+
+    #------ frontier show ------
+    plt.imshow(frontier, cmap='gray', origin='lower')
+    plt.draw()
+    plt.pause(0.001)
+
     all_pts = []
+
     if len(contours)>0:
-        upto=len(contours)-1
         i=0
 
         for i in range(0,len(contours)):
+            
             cnt = contours[i]
+
             M = cv2.moments(cnt)
+
             cx = int(M['m10']/M['m00'])
             cy = int(M['m01']/M['m00'])
-            xr=cx*resolution+startx
-            yr=cy*resolution+starty
-            pt=[np.array([xr,yr])]
+
+            xr = cx*resolution+startx
+            yr = cy*resolution+starty
+
+            pt = [np.array([xr,yr])]
+
             if len(all_pts)>0:
                 all_pts=np.vstack([all_pts,pt])
             else:

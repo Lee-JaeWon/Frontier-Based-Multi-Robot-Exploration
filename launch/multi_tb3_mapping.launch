@@ -30,7 +30,11 @@
         <arg name="gui" value="true"/>
         <arg name="headless" value="false"/>
         <arg name="debug" value="false"/>
-    </include>  
+    </include> 
+
+    <!-- turtlebot3 teleop for robot_1 -->
+    <include ns="$(arg first_tb3)" file="$(find turtlebot3_teleop)/launch/turtlebot3_teleop_key.launch">
+    </include>
 
     <group ns = "$(arg first_tb3)">
         <param name="robot_description" command="$(find xacro)/xacro --inorder $(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro" />

@@ -6,7 +6,6 @@ from nav_msgs.msg import OccupancyGrid
 from geometry_msgs.msg import PointStamped
 from getfrontier import getfrontier
 from std_msgs.msg import ColorRGBA
-from geometry_msgs.msg import Point
 
 import sys
 sys.setrecursionlimit(10**7)
