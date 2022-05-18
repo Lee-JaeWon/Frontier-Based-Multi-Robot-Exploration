@@ -4,6 +4,7 @@ import rospy
 from visualization_msgs.msg import Marker
 from nav_msgs.msg import OccupancyGrid
 from geometry_msgs.msg import PointStamped
+from geometry_msgs.msg import Point
 from getfrontier import getfrontier
 from std_msgs.msg import ColorRGBA
 
@@ -23,7 +24,7 @@ def detector_node():
     global mapData
 
     #--------- init ---------------
-    rospy.init_node('detector', anonymous=True)
+    rospy.init_node('detector', anonymous = False)
     rospy.loginfo_once("---- 'detector' node is loaded. ----")
     #------------------------------
     
@@ -53,10 +54,14 @@ def detector_node():
     exploration_goal = PointStamped()
     #------------------------------
 
+    
 
+    p = Point()
     while not rospy.is_shutdown():
+
         #----- rviz visualization -----
         frontier_points = Marker()
+        # print("new : ", frontier_points.points)
 
         frontier_points.header.frame_id = mapData.header.frame_id
         frontier_points.header.stamp=rospy.Time.now()
@@ -66,28 +71,45 @@ def detector_node():
         frontier_points.type = Marker.POINTS
         frontier_points.action = Marker.ADD
 
+        frontier_points.pose.orientation.w = 1.0
         frontier_points.scale.x = 0.2
         frontier_points.scale.y = 0.2
         frontier_points.color = ColorRGBA(1, 1, 0, 1)
         frontier_points.lifetime == rospy.Duration()
-        #------------------------------
+    #------------------------------
 
         # getfrontier Node
         frontiers = getfrontier(mapData)
-
+        # print("while Processing...")
+        
         for i in range(len(frontiers)):
             x=frontiers[i]
+            # print("x[0] is ", x[0])
+            # print("x[1] is ", x[1])
+
             exploration_goal.header.frame_id = mapData.header.frame_id
             exploration_goal.header.stamp = rospy.Time(0)
             exploration_goal.point.x = x[0]
             exploration_goal.point.y = x[1]
             exploration_goal.point.z = 0
-            frontier_points.points = [exploration_goal.point]
 
-            frontier_points.points=[exploration_goal.point]
-        marker_pub.publish(frontier_points)
+            p.x = x[0]
+            p.y = x[1]
+            p.z = 0
             
-    
+            # print("--------------------------")
+            # print("i is ",i)
+            # print("p.x is ",p.x)
+            # print("p.y is ",p.y)
+            # print(p)
+            # print("--------------------------")
+
+            frontier_points.points.append(Point(frontiers[i][0],frontiers[i][1],0))
+            # print("old : ", frontier_points.points)
+         
+            
+        marker_pub.publish(frontier_points)
+
         rate.sleep()
 
 if __name__ == '__main__':
