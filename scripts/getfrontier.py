@@ -36,10 +36,10 @@ def getfrontier(mapData):
 
     map_bin = cv2.inRange(img, 0, 1)
     edges = cv2.Canny(img, 100, 200)
-
-    # plt.imshow(edges, cmap='gray', origin='lower')
-    # plt.draw()
-    # plt.pause(0.001)
+    plt.subplot(1, 2, 1)
+    plt.imshow(edges, cmap='gray', origin='lower')
+    plt.draw()
+    plt.pause(0.001)
 
     _, contours, _ = cv2.findContours(map_bin, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     cv2.drawContours(map_bin, contours, -1, (255,255,255), 5)
@@ -53,8 +53,10 @@ def getfrontier(mapData):
     cv2.drawContours(frontier, contours, -1, (255,255,255), 2)
 
     _, contours, _ = cv2.findContours(frontier,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+    cv2.drawContours(frontier, contours, -1, (255,255,255), 2)
 
     #------ frontier show ------
+    plt.subplot(1, 2, 2)
     plt.imshow(frontier, cmap='gray', origin='lower')
     plt.draw()
     plt.pause(0.001)
@@ -76,6 +78,7 @@ def getfrontier(mapData):
 
             xr = cx*resolution+startx
             yr = cy*resolution+starty
+
             # print("xr is", xr)
             # print("yr is",yr)
 

@@ -47,7 +47,7 @@ def detector_node():
     while mapData.header.seq<1 or len(mapData.data)<1:
         pass
 
-    rate = rospy.Rate(50)
+    rate = rospy.Rate(30)
 
     #----- rviz visualization -----
     # https://velog.io/@717lumos/Rviz-Rviz-%EC%8B%9C%EA%B0%81%ED%99%94%ED%95%98%EA%B8%B0-Marker
@@ -66,14 +66,20 @@ def detector_node():
         frontier_points.header.frame_id = mapData.header.frame_id
         frontier_points.header.stamp=rospy.Time.now()
         frontier_points.ns = "points"
-        frontier_points.id = 0
+
+        if(mapData.header.frame_id == 'robot_1/map'):
+            frontier_points.id = 0
+        if(mapData.header.frame_id == 'robot_2/map'):
+            frontier_points.id = 1
+        if(mapData.header.frame_id == 'robot_3/map'):
+            frontier_points.id = 2
         
         frontier_points.type = Marker.POINTS
         frontier_points.action = Marker.ADD
 
         frontier_points.pose.orientation.w = 1.0
-        frontier_points.scale.x = 0.2
-        frontier_points.scale.y = 0.2
+        frontier_points.scale.x = 0.15
+        frontier_points.scale.y = 0.15
         frontier_points.color = ColorRGBA(1, 1, 0, 1)
         frontier_points.lifetime == rospy.Duration()
     #------------------------------
@@ -84,9 +90,7 @@ def detector_node():
         
         for i in range(len(frontiers)):
             x=frontiers[i]
-            # print("x[0] is ", x[0])
-            # print("x[1] is ", x[1])
-
+            
             exploration_goal.header.frame_id = mapData.header.frame_id
             exploration_goal.header.stamp = rospy.Time(0)
             exploration_goal.point.x = x[0]
