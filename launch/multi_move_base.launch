@@ -10,12 +10,12 @@
   <!-- move_base -->
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
     <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
-    <rosparam file="$(find Frontier-Based-Exploration)/params/costmap_common_params_$(arg model).yaml" command="load" ns="global_costmap" />
-    <rosparam file="$(find Frontier-Based-Exploration)/params/costmap_common_params_$(arg model).yaml" command="load" ns="local_costmap" />
-    <rosparam file="$(find Frontier-Based-Exploration)/params/local_costmap_params.yaml" command="load" />
-    <rosparam file="$(find Frontier-Based-Exploration)/params/global_costmap_params.yaml" command="load" />
-    <rosparam file="$(find Frontier-Based-Exploration)/params/move_base_params.yaml" command="load" />
-    <rosparam file="$(find Frontier-Based-Exploration)/params/dwa_local_planner_params_$(arg model).yaml" command="load" />
+    <rosparam file="$(find frontier_based_exploration)/params/costmap_common_params_$(arg model).yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find frontier_based_exploration)/params/costmap_common_params_$(arg model).yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find frontier_based_exploration)/params/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find frontier_based_exploration)/params/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find frontier_based_exploration)/params/move_base_params.yaml" command="load" />
+    <rosparam file="$(find frontier_based_exploration)/params/dwa_local_planner_params_$(arg model).yaml" command="load" />
 
 
     <param name="global_costmap/global_frame" value="$(arg namespace)/map"/>

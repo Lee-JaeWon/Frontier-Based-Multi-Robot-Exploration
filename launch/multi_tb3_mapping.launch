@@ -24,7 +24,7 @@
 
     <!-- Environment -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
-        <arg name="world_name" value="$(find Frontier-Based-Exploration)/worlds/turtlebot3_house.world"/>
+        <arg name="world_name" value="$(find frontier_based_exploration)/worlds/turtlebot3_house.world"/>
         <arg name="paused" value="false"/>
         <arg name="use_sim_time" value="true"/>
         <arg name="gui" value="true"/>
@@ -33,8 +33,8 @@
     </include> 
 
     <!-- turtlebot3 teleop for robot_1 -->
-    <include ns="$(arg first_tb3)" file="$(find turtlebot3_teleop)/launch/turtlebot3_teleop_key.launch">
-    </include>
+    <!-- <include ns="$(arg first_tb3)" file="$(find turtlebot3_teleop)/launch/turtlebot3_teleop_key.launch">
+    </include> -->
 
     <group ns = "$(arg first_tb3)">
         <param name="robot_description" command="$(find xacro)/xacro --inorder $(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro" />
@@ -70,24 +70,24 @@
     </group>
 
     <!-- run the preset rviz -->
-    <node name="rviz" pkg="rviz" type="rviz" args="-d /home/lee-jaewon/catkin_ws/src/Frontier-Based-Exploration/rviz/multi_turtlebot3_slam.rviz" />
+    <node name="rviz" pkg="rviz" type="rviz" args="-d /home/lee-jaewon/catkin_ws/src/frontier_based_exploration/rviz/multi_turtlebot3_slam.rviz" />
 
     <!-- move_base -->
-    <include ns="$(arg first_tb3)" file="$(find Frontier-Based-Exploration)/launch/multi_move_base.launch">
+    <include ns="$(arg first_tb3)" file="$(find frontier_based_exploration)/launch/multi_move_base.launch">
         <arg name="model" value="$(arg model)" />
         <arg name="move_forward_only" value="$(arg move_forward_only)"/>
         <arg name="cmd_vel_topic" value="cmd_vel"/>
         <arg name="namespace" value="$(arg first_tb3)"/>
     </include>
 
-    <include ns="$(arg second_tb3)" file="$(find Frontier-Based-Exploration)/launch/multi_move_base.launch">
+    <include ns="$(arg second_tb3)" file="$(find frontier_based_exploration)/launch/multi_move_base.launch">
         <arg name="model" value="$(arg model)" />
         <arg name="move_forward_only" value="$(arg move_forward_only)"/>
         <arg name="cmd_vel_topic" value="cmd_vel"/>
         <arg name="namespace" value="$(arg second_tb3)"/>
     </include>
 
-    <include ns="$(arg third_tb3)" file="$(find Frontier-Based-Exploration)/launch/multi_move_base.launch">
+    <include ns="$(arg third_tb3)" file="$(find frontier_based_exploration)/launch/multi_move_base.launch">
         <arg name="model" value="$(arg model)" />
         <arg name="move_forward_only" value="$(arg move_forward_only)"/>
         <arg name="cmd_vel_topic" value="cmd_vel"/>

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
     
+from array import array
 import rospy
 from visualization_msgs.msg import Marker
 from nav_msgs.msg import OccupancyGrid
@@ -7,6 +8,9 @@ from geometry_msgs.msg import PointStamped
 from geometry_msgs.msg import Point
 from getfrontier import getfrontier
 from std_msgs.msg import ColorRGBA
+
+# custom msg
+from frontier_based_exploration.msg import PointArray
 
 import sys
 sys.setrecursionlimit(10**7)
@@ -41,8 +45,11 @@ def detector_node():
     #------------------------------
     
     #--------- Publisher ----------
-    marker_pub = rospy.Publisher("marker", Marker, queue_size=10) # marker publish
+    marker_pub = rospy.Publisher("marker", Marker, queue_size=10) # marker publish for Visualization
+    target_pub = rospy.Publisher('/detected_points', PointArray, queue_size=10) # publish for Assign
     #------------------------------
+
+    
 
     while mapData.header.seq<1 or len(mapData.data)<1:
         pass
@@ -57,6 +64,8 @@ def detector_node():
     
 
     p = Point()
+    
+
     while not rospy.is_shutdown():
 
         #----- rviz visualization -----
@@ -84,10 +93,11 @@ def detector_node():
         frontier_points.lifetime == rospy.Duration()
     #------------------------------
 
-        # getfrontier Node
+        # getfrontier.py Node
         frontiers = getfrontier(mapData)
         # print("while Processing...")
         
+        arraypoints = PointArray()
         for i in range(len(frontiers)):
             x=frontiers[i]
             
@@ -100,19 +110,12 @@ def detector_node():
             p.x = x[0]
             p.y = x[1]
             p.z = 0
-            
-            # print("--------------------------")
-            # print("i is ",i)
-            # print("p.x is ",p.x)
-            # print("p.y is ",p.y)
-            # print(p)
-            # print("--------------------------")
 
             frontier_points.points.append(Point(frontiers[i][0],frontiers[i][1],0))
-            # print("old : ", frontier_points.points)
-         
-            
-        marker_pub.publish(frontier_points)
+            arraypoints.points.append(Point(frontiers[i][0],frontiers[i][1],0))
+
+        marker_pub.publish(frontier_points) # for Visualization
+        target_pub.publish(arraypoints) # for assigner
 
         rate.sleep()
 

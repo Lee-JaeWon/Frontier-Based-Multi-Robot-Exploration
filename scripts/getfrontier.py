@@ -73,14 +73,9 @@ def getfrontier(mapData):
 
             cx = int(M['m10']/M['m00'])
             cy = int(M['m01']/M['m00'])
-            # print("cx is", cx)
-            # print("cy is",cy)
 
             xr = cx*resolution+startx
             yr = cy*resolution+starty
-
-            # print("xr is", xr)
-            # print("yr is",yr)
 
             pt = [np.array([xr,yr])]
 

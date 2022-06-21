@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(Frontier-Based-Exploration)
+project(frontier_based_exploration)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -57,6 +57,20 @@ find_package(catkin REQUIRED COMPONENTS
 #   Message1.msg
 #   Message2.msg
 # )
+
+## Generate messages in the 'msg' folder
+add_message_files(
+  FILES
+  PointArray.msg
+)
+
+## Generate services in the 'srv' folder
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+  geometry_msgs
+)
+
 
 ## Generate services in the 'srv' folder
 # add_service_files(
