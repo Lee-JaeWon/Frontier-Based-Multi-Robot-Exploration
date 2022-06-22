@@ -68,6 +68,7 @@ def node():
 	robots=[]
 	if len(namespace)>0:
 		for i in range(0,n_robots):
+			rospy.loginfo_once(namespace+str(i+namespace_init_count))
 			robots.append(robot(namespace+str(i+namespace_init_count)))
 	elif len(namespace)==0:
 			robots.append(robot(namespace))

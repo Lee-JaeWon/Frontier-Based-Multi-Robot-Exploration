@@ -8,7 +8,7 @@ from geometry_msgs.msg import PoseStamped
 from numpy import floor
 from numpy.linalg import norm
 from numpy import inf
-# ________________________________________________________________________________
+
 
 
 class robot:
@@ -22,19 +22,23 @@ class robot:
         self.global_frame = rospy.get_param('~global_frame', '/map')
         self.robot_frame = rospy.get_param('~robot_frame', 'base_link')
         self.plan_service = rospy.get_param(
-            '~plan_service', '/move_base_node/NavfnROS/make_plan')
+            '~plan_service', '/move_base/NavfnROS/plan')
         self.listener = tf.TransformListener()
         self.listener.waitForTransform(
-            self.global_frame, self.name+'/'+self.robot_frame, rospy.Time(0), rospy.Duration(10.0))
+            self.name+'/'+self.robot_frame, self.name+'/'+self.global_frame, rospy.Time(0), rospy.Duration(10.0))
+        
         cond = 0
+        rospy.loginfo_once("Success waitForTransform")
+
         while cond == 0:
             try:
+                rospy.loginfo_once(self.name+'/'+self.global_frame)
+                rospy.loginfo_once(self.name+'/'+self.robot_frame)
                 rospy.loginfo('Waiting for the robot transform')
-                (trans, rot) = self.listener.lookupTransform(
-                    self.global_frame, self.name+'/'+self.robot_frame, rospy.Time(0))
+                (trans, rot) = self.listener.lookupTransform(self.name+'/'+self.robot_frame, self.name+'/'+self.global_frame, rospy.Time(0))
                 cond = 1
             except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
-                cond == 0
+                cond = 0
         self.position = array([trans[0], trans[1]])
         self.assigned_point = self.position
         self.client = actionlib.SimpleActionClient(
