@@ -46,7 +46,7 @@ def detector_node():
     
     #--------- Publisher ----------
     marker_pub = rospy.Publisher("marker", Marker, queue_size=10) # marker publish for Visualization
-    target_pub = rospy.Publisher('/detected_points', PointArray, queue_size=10) # publish for Assign
+    target_pub = rospy.Publisher('/detected_points', PointStamped, queue_size=10) # publish for Assign
     #------------------------------
 
     
@@ -114,8 +114,10 @@ def detector_node():
             frontier_points.points.append(Point(frontiers[i][0],frontiers[i][1],0))
             arraypoints.points.append(Point(frontiers[i][0],frontiers[i][1],0))
 
+            target_pub.publish(exploration_goal) # for assigner
+
         marker_pub.publish(frontier_points) # for Visualization
-        target_pub.publish(arraypoints) # for assigner
+        # target_pub.publish(arraypoints) # for assigner
 
         rate.sleep()
 
