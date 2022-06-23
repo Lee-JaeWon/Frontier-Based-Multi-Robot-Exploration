@@ -1,46 +1,16 @@
 <launch>
-    <node name="assigner_1" pkg="frontier_based_exploration" type="assigner_mine.py" output="screen">
+    <node name="assigner" pkg="frontier_based_exploration" type="assigner_mine.py" output="screen">
       <param name="map_topic" value="/map"/>
       <param name="global_frame" value="map"/>
-      <param name="namespace_init_count" value="0"/>
       <param name="info_radius" value="1"/> 
       <param name="info_multiplier" value="3.0"/> 
       <param name="hysteresis_radius" value="3.0"/> 
       <param name="hysteresis_gain" value="2.0"/> 
       <param name="frontiers_topic" value="/filtered_points"/>
-      <param name="namespace" value="/robot_1"/>
+      <param name="namespace" value="/robot_"/>
       <param name="delay_after_assignement" value="1.5"/>
       <param name="rate" value="100"/>
     </node>
-
-    <node name="assigner_2" pkg="frontier_based_exploration" type="assigner_mine.py" output="screen">
-      <param name="map_topic" value="/map"/>
-      <param name="global_frame" value="map"/>
-      <param name="namespace_init_count" value="0"/>
-      <param name="info_radius" value="1"/> 
-      <param name="info_multiplier" value="3.0"/> 
-      <param name="hysteresis_radius" value="3.0"/> 
-      <param name="hysteresis_gain" value="2.0"/> 
-      <param name="frontiers_topic" value="/filtered_points"/> 
-      <param name="namespace" value="/robot_2"/>
-      <param name="delay_after_assignement" value="1.5"/>
-      <param name="rate" value="100"/>
-    </node>
-
-    <node name="assigner_3" pkg="frontier_based_exploration" type="assigner_mine.py" output="screen">
-      <param name="map_topic" value="/map"/>
-      <param name="global_frame" value="map"/>
-      <param name="namespace_init_count" value="0"/>
-      <param name="info_radius" value="1"/> 
-      <param name="info_multiplier" value="3.0"/> 
-      <param name="hysteresis_radius" value="3.0"/> 
-      <param name="hysteresis_gain" value="2.0"/> 
-      <param name="frontiers_topic" value="/filtered_points"/>
-      <param name="namespace" value="/robot_3"/>
-      <param name="delay_after_assignement" value="1.5"/>
-      <param name="rate" value="100"/>
-    </node>
-
 
 <!-- http://wiki.ros.org/rospy_tutorials/Tutorials/Makefile -->
 </launch>

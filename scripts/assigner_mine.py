@@ -149,29 +149,68 @@ def assign_node():
 				centroid_record.append(centroids[j])
 				id_record.append(i)
 
-		# rospy.loginfo("revenue record: "+str(revenue_record))	
-		# rospy.loginfo("centroid record: "+str(centroid_record))	
-		# rospy.loginfo("robot IDs record: "+str(id_record))
+		rospy.loginfo("revenue record: "+str(revenue_record))	
+		rospy.loginfo("centroid record: "+str(centroid_record))	
+		rospy.loginfo("robot IDs record: "+str(id_record))
 
-		if (len(id_record)>0):
-			winner_id=revenue_record.index(max(revenue_record))
+		temp1 = [];temp2 = [];temp3 = []
+		cen_temp1 = [];cen_temp2 = [];cen_temp3 = []
 
-			winner = id_record[winner_id]
+		for k in range(len(id_record)):
+			if(id_record[k] == 0):
+				temp1.append(revenue_record[k])
+				cen_temp1.append(centroid_record[k])
+				winner_id=temp1.index(max(temp1))
 
-			goal.target_pose.pose.position.x = centroid_record[winner_id][0]
-			goal.target_pose.pose.position.y = centroid_record[winner_id][1]
-			goal.target_pose.pose.orientation.w = 1.0
+				goal.target_pose.pose.position.x = centroid_record[winner_id][0]
+				goal.target_pose.pose.position.y = centroid_record[winner_id][1]
+				goal.target_pose.pose.orientation.w = 1.0
 
-			# print(centroid_record[winner_id][0])
-			# print(centroid_record[winner_id][1])
+				client_1.send_goal(goal)
 
-			if(winner == 0): client = client_1
-			elif(winner == 1): client = client_2
-			else: client = client_3
+			elif(id_record[k] == 1):
+				temp2.append(revenue_record[k])
+				cen_temp2.append(centroid_record[k])
+				winner_id=temp2.index(max(temp2))
 
-			client.send_goal(goal)
-				
+				goal.target_pose.pose.position.x = centroid_record[winner_id][0]
+				goal.target_pose.pose.position.y = centroid_record[winner_id][1]
+				goal.target_pose.pose.orientation.w = 1.0
+
+				client_2.send_goal(goal)
+
+			else:
+				temp3.append(revenue_record[k])
+				cen_temp3.append(centroid_record[k])
+				winner_id=temp3.index(max(temp3))
+
+				goal.target_pose.pose.position.x = centroid_record[winner_id][0]
+				goal.target_pose.pose.position.y = centroid_record[winner_id][1]
+				goal.target_pose.pose.orientation.w = 1.0
+
+				client_3.send_goal(goal)
+			
 			rospy.sleep(delay_after_assignement)
+
+		# if (len(id_record)>0):
+		# 	winner_id=revenue_record.index(max(revenue_record))
+
+		# 	winner = id_record[winner_id]
+
+		# 	goal.target_pose.pose.position.x = centroid_record[winner_id][0]
+		# 	goal.target_pose.pose.position.y = centroid_record[winner_id][1]
+		# 	goal.target_pose.pose.orientation.w = 1.0
+
+		# 	# print(centroid_record[winner_id][0])
+		# 	# print(centroid_record[winner_id][1])
+
+		# 	if(winner == 0): client = client_1
+		# 	elif(winner == 1): client = client_2
+		# 	else: client = client_3
+
+		# 	client.send_goal(goal)
+				
+		# 	rospy.sleep(delay_after_assignement)
 
 		rate.sleep()
 
