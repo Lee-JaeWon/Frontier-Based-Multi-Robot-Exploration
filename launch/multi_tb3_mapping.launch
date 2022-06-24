@@ -7,8 +7,8 @@
     <arg name="second_tb3" default="robot_2"/>
     <arg name="third_tb3"  default="robot_3"/>
 
-    <arg name="first_tb3_x_pos" default="-7.0"/>
-    <arg name="first_tb3_y_pos" default="-1.0"/>
+    <!-- <arg name="first_tb3_x_pos" default="-6.0"/>
+    <arg name="first_tb3_y_pos" default=" 3.0"/>
     <arg name="first_tb3_z_pos" default=" 0.0"/>
     <arg name="first_tb3_yaw"   default=" 0.0"/>
 
@@ -20,21 +20,32 @@
     <arg name="third_tb3_x_pos" default=" 0.5"/>
     <arg name="third_tb3_y_pos" default=" 3.0"/>
     <arg name="third_tb3_z_pos" default=" 0.0"/>
+    <arg name="third_tb3_yaw"   default=" 0.0"/> -->
+
+    <arg name="first_tb3_x_pos" default="-7.5"/>
+    <arg name="first_tb3_y_pos" default=" 4.0"/>
+    <arg name="first_tb3_z_pos" default=" 0.0"/>
+    <arg name="first_tb3_yaw"   default=" 0.0"/>
+
+    <arg name="second_tb3_x_pos" default=" 3.5"/>
+    <arg name="second_tb3_y_pos" default="-6.0"/>
+    <arg name="second_tb3_z_pos" default=" 0.0"/>
+    <arg name="second_tb3_yaw"   default=" 0.0"/>
+
+    <arg name="third_tb3_x_pos" default=" 4.0"/>
+    <arg name="third_tb3_y_pos" default=" 6.5"/>
+    <arg name="third_tb3_z_pos" default=" 0.0"/>
     <arg name="third_tb3_yaw"   default=" 0.0"/>
 
     <!-- Environment -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
-        <arg name="world_name" value="$(find frontier_based_exploration)/worlds/turtlebot3_house.world"/>
+        <arg name="world_name" value="$(find frontier_based_exploration)/worlds/my_world.world"/>
         <arg name="paused" value="false"/>
         <arg name="use_sim_time" value="true"/>
         <arg name="gui" value="true"/>
         <arg name="headless" value="false"/>
         <arg name="debug" value="false"/>
-    </include> 
-
-    <!-- turtlebot3 teleop for robot_1 -->
-    <!-- <include ns="$(arg first_tb3)" file="$(find turtlebot3_teleop)/launch/turtlebot3_teleop_key.launch">
-    </include> -->
+    </include>
 
     <group ns = "$(arg first_tb3)">
         <param name="robot_description" command="$(find xacro)/xacro --inorder $(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro" />
@@ -73,21 +84,21 @@
     <node name="rviz" pkg="rviz" type="rviz" args="-d /home/lee-jaewon/catkin_ws/src/frontier_based_exploration/rviz/multi_turtlebot3_slam.rviz" />
 
     <!-- move_base -->
-    <include ns="$(arg first_tb3)" file="$(find frontier_based_exploration)/launch/multi_move_base.launch">
+    <include ns="$(arg first_tb3)" file="$(find frontier_based_exploration)/launch/multi_move_base_teb.launch">
         <arg name="model" value="$(arg model)" />
         <arg name="move_forward_only" value="$(arg move_forward_only)"/>
         <arg name="cmd_vel_topic" value="cmd_vel"/>
         <arg name="namespace" value="$(arg first_tb3)"/>
     </include>
 
-    <include ns="$(arg second_tb3)" file="$(find frontier_based_exploration)/launch/multi_move_base.launch">
+    <include ns="$(arg second_tb3)" file="$(find frontier_based_exploration)/launch/multi_move_base_teb.launch">
         <arg name="model" value="$(arg model)" />
         <arg name="move_forward_only" value="$(arg move_forward_only)"/>
         <arg name="cmd_vel_topic" value="cmd_vel"/>
         <arg name="namespace" value="$(arg second_tb3)"/>
     </include>
 
-    <include ns="$(arg third_tb3)" file="$(find frontier_based_exploration)/launch/multi_move_base.launch">
+    <include ns="$(arg third_tb3)" file="$(find frontier_based_exploration)/launch/multi_move_base_teb.launch">
         <arg name="model" value="$(arg model)" />
         <arg name="move_forward_only" value="$(arg move_forward_only)"/>
         <arg name="cmd_vel_topic" value="cmd_vel"/>
